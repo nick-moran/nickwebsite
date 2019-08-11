@@ -1,0 +1,36 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+.sticky2 {
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -ms-sticky;
+    position: -o-sticky;
+    top: 0px;
+} 
+#push{
+    animation: push 0.5s ease-in-out 1;
+}
+
+@keyframes push{
+    
+    0%  {transform: scale(0.5);}
+    50% {transform: scale(1.2);}
+}
+
+html{
+    font-family: 'Montserrat', sans-serif;
+}
+
+.activeElement{
+    border-radius: 17px;
+    -webkit-animation:Border 1.2s infinite alternate;
+}
+
+@-webkit-keyframes Border {
+    0% {border-color:transparent;}
+    100% {border-color:royalblue;}
+}
