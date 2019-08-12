@@ -56,7 +56,7 @@ export default class Index extends React.Component{
             </div>
 
             <div className="my-16 sm:my-20 lg:my-20 mx-auto lg:flex lg:justify-center lg:flex-wrap lg:content-center lg:max-w-full">
-              <div className="font-bold text-xl w-full text-center mr-20">
+              <div className="font-bold text-xl w-full text-center">
                 technologies I am familiar with
               </div>
               {cardBuilder}
