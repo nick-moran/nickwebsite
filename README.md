@@ -1,2 +1,2 @@
 Nick Moran's portfolio website.
-I had alot of fun making it.
+I had a lot of fun making it.
