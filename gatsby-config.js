@@ -4,14 +4,11 @@ module.exports = {
   plugins:[
     'gatsby-plugin-postcss',
     {
-      resolve: `gatsby-source-cosmicjs`,
+      resolve: `gatsby-source-contentful`,
       options: {
-        bucketSlug: process.env.COSMIC_BUCKET_SLUG,
-        objectTypes:['pages','techcards','projectyears'],
-        apiAccess: {
-          read_key: process.env.COSMIC_READ_KEY,
-        }
-      }
+        spaceId: `eci7raf000ix`,
+        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+      },
     },
     `gatsby-plugin-react-helmet`,
   ]

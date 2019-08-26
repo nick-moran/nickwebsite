@@ -17,26 +17,28 @@ export default class Index extends React.Component{
 
 
     render(){
-      let content={__html:this.props.data.cosmicjsPages.content};
-      let imgSrc=this.props.data.cosmicjsPages.metadata.heyo.imgix_url;
-      let projText = this.props.data.cosmicjsPages.metadata.projectstext;
-      let cards = this.props.data.allCosmicjsTechcards.nodes;
+      let helloText = this.props.data.contentfulPages.childContentfulPagesIntroTextRichTextNode.content[0].content[0].value
+      let compSciText = this.props.data.contentfulPages.childContentfulPagesIntroTextRichTextNode.content[1].content[0].value
+      let projText = this.props.data.contentfulPages.projText;
+      let imgSrc = this.props.data.contentfulPages.heyThere.file.url
       
+      let cards = this.props.data.allContentfulTechCards.nodes;
+
       let cardBuilder = cards.map((el,index)=>{
-        let cardContent={__html:el.content};
+        let cardContent=el.content;
         let bgColor="white";
         
-        if(el.metadata.color === 'yellow'){
+        if(el.color === 'yellow'){
           bgColor='jsYellow';
         }
-        return <div key={index} onClick={this.handleClick} id={el.metadata.shortname} className="my-10 lg:mb-0 mx-8">
+        return <div key={index} onClick={this.handleClick} id={el.id2} className="my-10 lg:mb-0 mx-8">
             <Card 
               content={cardContent}
-              img={el.metadata.techimage.imgix_url}
-              color={el.metadata.color}
+              img={el.techImage.file.url}
+              color={el.color}
               bgColor={bgColor}
-              imgPosition={el.metadata.position}
-              name={el.metadata.shortname}
+              imgPosition={el.position}
+              name={el.id2}
               
             />
           </div>
@@ -48,7 +50,7 @@ export default class Index extends React.Component{
             <div className="max-w-sm mx-auto mt-16 md:flex md:max-w-xl lg:max-w-4xl lg:mt-24">
               <img className="w-64 lg:w-96 mx-auto" src={imgSrc} alt="Cartoon version of Nick Moran; very handsome"/>
               <div className="w-84 mt-10 text-xl ml-8 sm:ml-10 md:w-64 md:ml-0 md:mt-10 lg:mt-32 lg:text-2xl lg:w-96">
-                <div dangerouslySetInnerHTML={content}/>
+                <div><div>{helloText}</div><div>{compSciText}</div></div>
                 <div className="mt-6 underline hover:text-green-400">
                   <BuildLinks url="/projects/" color1="green-400" text={projText} />
                 </div>
@@ -77,8 +79,8 @@ const Card = (props) =>(
               "backgroundImage":`url(${props.img})`
           }}/> 
           <div className="w-full rounded-tr-lg  lg:rounded-tr-none h-full lg:border-t-2 border-gray-200 lg:h-auto bg-white">
-              <div className="w-full text-gray-900 text-base text-left lg:font-bold pl-2 md:pl-3 py-4 lg:mt-0 lg:px-6 lg:ml-2 rounded-tr lg:py-10">
-                <div dangerouslySetInnerHTML={props.content} />
+              <div className="w-full text-gray-900 text-base text-left lg:font-bold pl-2 md:pl-3 py-4 lg:mt-0 lg:px-6 lg:ml-2 rounded-tr lg:py-12">
+                <div>{props.content}</div>
               </div>
           </div>
       </div>
@@ -90,30 +92,33 @@ const Card = (props) =>(
 )
 
 export const query = graphql`
-query{
-  cosmicjsPages(slug: {eq: "homepage"}) {
-    title
-    content
-    metadata {
-      projectstext
-      heyo {
-        imgix_url
-      }
-    }
-  }
-  allCosmicjsTechcards(sort: {order: DESC, fields: order}){
-    nodes {
-      content
-      metadata {
-        color
-        position
-        shortname
-        techimage {
-          imgix_url
+  query{
+    contentfulPages(title: {eq: "homepage"}) {
+      heyThere {
+        file {
+          url
         }
       }
-      order
+      projText
+      childContentfulPagesIntroTextRichTextNode {
+        content {
+          content {
+            value
+          }
+        }
+      }
     }
-  }
-  }  
-`
+    allContentfulTechCards(sort: {order: ASC, fields: order}) {
+      nodes {
+        color
+        content
+        position
+        techImage {
+          file {
+            url
+          }
+        }
+        id2
+      }
+    }
+  }` 
