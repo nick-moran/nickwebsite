@@ -6,14 +6,14 @@ export default ({data}) => {
     let dataHolder = data.allContentfulProjectWriteup.nodes[0];
     
     let linkData = dataHolder.linksToTheOutside;
-    console.log(linkData)
 
     let clickableLinks = `None to display`;
 
     if(linkData !== null){
         clickableLinks = linkData.map(el=>{
-            return <div className="inline-block" key={el}>
-                <a href={el.link} target="_blank">
+            
+            return <div className="inline-block overflow-hidden rounded-lg mr-5" key={el.link}>
+                <a href={el.link} target="_blank" rel="noopener noreferrer">
                     <img className="w-16 bg-white" src={el.logo.file.url} alt={el.link} />
                 </a>
             </div>
@@ -31,11 +31,43 @@ export default ({data}) => {
         }
     })
 
+    let media = dataHolder.mediaLinks;
+
+    let videos = null;
+    let photos= null;
+
+    if(media !== null && media.videoLinks !== null){
+        let videoLinks = media.videoLinks[0].medialink[0].videoLinks;
+
+        videos = videoLinks.map(el =>{
+            return <VideoWrapper link={el.link} title={el.link} key={el.link} />
+        })
+    }
+    
+    if(media !== null && media.photo !== null){
+        photos = media.photo.map(el=>{
+            return <ImageWrapper img={el.file.url} key={el.file.url} alt={el.file.url}/>
+        })
+    }
+    
+    
+    let mediaHeader = (media !== null) ? 'media' : null;
+
+    
+    
+
     return(
         <Layout>
             <div className="max-w-xs mx-auto my-10 sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-4xl">
                 {title}
                 {content}
+                <div>
+                    <div className="mb-2 mt-4 font-bold text-2xl text-green-400">
+                        {mediaHeader}
+                    </div>
+                    {photos}
+                    {videos}
+                </div>
             </div>
         </Layout>
     )
@@ -45,7 +77,7 @@ const ProjHeader = (props) =>(
     <div className="">
         <div className="sm:flex flex-row-reverse justify-between">                        
             <div className="block">
-                <div className="overflow-hidden shadow-xl mt-2 rounded-lg w-20 h-12 md:w-32 md:h-20 md:my-2 bg-contain bg-no-repeat bg-center bg-white" style={{
+                <div className="overflow-hidden shadow-xl mt-2 rounded-lg w-20 h-12 md:w-32 md:h-20 md:my-2 bg-cover bg-no-repeat bg-center bg-white" style={{
                     "backgroundImage":`url(${props.projImg})`
                 }}/> 
                 
@@ -79,6 +111,19 @@ const WriteUpElement = (props) => (
      </div>
 )
 
+const VideoWrapper = (props) =>(
+    <div className="mx-auto md:h-72 my-5">
+        <iframe title={props.title} className="w-full h-full" src={props.link} frameBorder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+    </div>
+)
+
+const ImageWrapper = (props) => (
+    <div className="my-5">
+        <img src={props.img} alt={props.alt}/>
+    </div>
+)
+
 export const query = graphql`
 query($slug: String!){
     allContentfulProjectWriteup (filter: {title: {eq: $slug}})  {
@@ -104,6 +149,21 @@ query($slug: String!){
               }
             }
             link
+        }
+        mediaLinks {
+            
+            photo {
+              file {
+                url
+              }
+            }
+            videoLinks {
+                medialink {
+                  videoLinks {
+                    link
+                  }
+                }
+            }
         }
       }
     }

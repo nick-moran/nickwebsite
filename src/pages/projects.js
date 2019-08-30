@@ -149,7 +149,7 @@ const CardBuilder = (props) =>{
     return <Link to={props.projLink}>
         <div className={`max-w-xs md:max-w-sm shadow-2xl rounded-lg w-96  ${props.isFiltered}`}>
             <div className="block relative">
-                <div className={`overflow-hidden rounded-t-lg w-full h-40 md:h-48 bg-contain bg-no-repeat bg-center bg-white`} style={{
+                <div className={`overflow-hidden rounded-t-lg w-full h-40 md:h-48 bg-cover bg-no-repeat bg-center bg-white`} style={{
                     "backgroundImage":`url(${props.url})`
                 }}>
                     <div className={`absolute bg-project-background opacity-0 rounded-t-lg hover:bg-project-background-active hover:opacity-100 z-0 h-40 md:h-48`} style={style}>

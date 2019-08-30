@@ -28,6 +28,21 @@ exports.createPages = async ({graphql, actions}) => {
           }
           link
         }
+        mediaLinks {
+          
+          photo {
+            file {
+              url
+            }
+          }
+          videoLinks {
+            medialink {
+              videoLinks {
+                link
+              }
+            }
+          }
+        }
       }
     }
   }`)
